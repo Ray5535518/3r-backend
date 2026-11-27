@@ -1,13 +1,11 @@
-"""CLI script for the example package. This will be called on the command line"""
-
 import click
 
-from example.demo_module import hello_world
+from example.demo_module import summarize_devices
 
 
 @click.command()
-@click.option("--message", prompt="message", help="Type a message to say")
-@click.version_option()
-def example_cli(message):
-    """Example script. This function is referenced in setup.cfg"""
-    click.echo(hello_world(message))
+@click.option("--input", "input_path", required=True, help="Path to device CSV file.")
+def example_cli(input_path: str) -> None:
+    summary = summarize_devices(input_path)
+    for device, mean_val in summary.items():
+        click.echo(f"{device}\t{mean_val:.2f}")
